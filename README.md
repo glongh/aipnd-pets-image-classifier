@@ -1,4 +1,4 @@
-## Use a Pre-trained Image Classifier to Identify Dog Breed
+## Use of a Pre-trained Image Classifier to Identify Dog Breed
 ### Using ResNet, AlexNet and VGG
 The objetives of this Proof of concept are:
 1) Correctly identify which pet images are of dogs (even if breed is misclassified) and which pet images aren't of dogs.
