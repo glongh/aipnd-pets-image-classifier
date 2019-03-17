@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 # */AIPND-revision/intropyproject-classify-pet-images/calculates_results_stats.py
 #                                                                             
-# PROGRAMMER:
-# DATE CREATED:                                  
-# REVISED DATE: 
+# PROGRAMMER: Gaston L.
+# DATE CREATED: 2019-01-10                                 
+# REVISED DATE: 2019-01-13
 # PURPOSE: Create a function calculates_results_stats that calculates the 
 #          statistics of the results of the programrun using the classifier's model 
 #          architecture to classify the images. This function will use the 
@@ -70,4 +70,49 @@ def calculates_results_stats(results_dic):
     """        
     # Replace None with the results_stats_dic dictionary that you created with 
     # this function 
-    return None
+    results_stats_dic = dict()
+    results_stats_dic['n_images'] = 0           # Number of images
+    results_stats_dic['n_match'] = 0            # Number of label matches
+    results_stats_dic['n_dogs_img'] = 0         # Number of dog images
+    results_stats_dic['n_notdogs_img'] = 0      # Number of NON-dog images
+    results_stats_dic['n_correct_dogs'] = 0     # Number of correctly classified dog images
+    results_stats_dic['n_correct_notdogs'] = 0  # Number of correctly classified NON-dog images
+    results_stats_dic['n_correct_breed'] = 0    # Number of correctly classified dog breeds
+   
+    results_stats_dic['n_images'] = len(results_dic)
+    
+    for key in results_dic:
+        # Number of Correct Dog matches
+        if results_dic[key][3] == 1 and results_dic[key][4] == 1:
+            results_stats_dic['n_correct_dogs'] +=1
+        
+        # Number of Dog Images
+        if results_dic[key][3] == 1:
+            results_stats_dic['n_dogs_img'] += 1
+        else:  #  Number of Not Dog Images
+            results_stats_dic['n_notdogs_img'] += 1
+            
+        # Number of Correct Non-Dog matches
+        if results_dic[key][3] == 0 and results_dic[key][4] == 0:
+            results_stats_dic['n_correct_notdogs'] += 1
+            
+        # Number of Correct Breed matches
+        if results_dic[key][3] == 1 and results_dic[key][2] == 1:
+            results_stats_dic['n_correct_breed'] += 1
+        
+        if results_dic[key][2] == 1:
+            results_stats_dic['n_match'] += 1
+            
+    #  Percentage of Correctly Classified Dog Images        
+    results_stats_dic['pct_correct_dogs'] = (results_stats_dic['n_correct_dogs'] / results_stats_dic['n_dogs_img']) * 100 if results_stats_dic['n_dogs_img'] > 0 else 0.0
+    
+    # Percentage of Correctly Classified Dog Breeds
+    results_stats_dic['pct_correct_breed'] = (results_stats_dic['n_correct_breed'] / results_stats_dic['n_dogs_img']) * 100 if results_stats_dic['n_dogs_img'] > 0 else 0.0
+    
+    # Percentage of Correctly Classified Non-Dog Images
+    results_stats_dic['pct_correct_notdogs'] = (results_stats_dic['n_correct_notdogs'] / results_stats_dic['n_notdogs_img']) * 100 if results_stats_dic['n_notdogs_img'] > 0 else 0.0
+       
+    # Percentage Label Matches ( regardless if they're a dog)
+    results_stats_dic['pct_match'] = (results_stats_dic['n_match'] / results_stats_dic['n_images']) * 100 if results_stats_dic['n_images'] > 0 else 0.0
+    
+    return results_stats_dic
